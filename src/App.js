@@ -1,25 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import {
+  Navigate,
+  Route,
+  BrowserRouter as Router,
+  Routes,
+} from "react-router-dom";
+import UserScreen from "./screens/UserScreen";
+import ServiceScreen from "./screens/ServiceScreen";
+import Login from "./screens/Login";
+import Container from "./container";
+import UserRegister from "./screens/UserRegister";
+import ChatScreen from "./screens/ChatScreen";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App = () => {
+  const [isAuth, setIsAuth] = useState(false);
+
+  if (isAuth)
+    return (
+      <Router>
+        <Container>
+          <Routes>
+            <Route path="/" element={<UserScreen />} />
+            <Route path="/service" element={<ServiceScreen />} />
+            <Route path="/chat" element={<ChatScreen />} />
+          </Routes>
+        </Container>
+      </Router>
+    );
+  else
+    return (
+      <Router>
+        <Routes>
+          <Route path="/login" element={<Login setAuth={setIsAuth} />} />
+          <Route
+            path="/register"
+            element={<UserRegister setAuth={setIsAuth} />}
+          />
+          <Route path="*" element={<Navigate to={"/login"} replace />} />
+        </Routes>
+      </Router>
+    );
+};
 
 export default App;
